@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ServicesAppointmentResource;
 use App\Models\ServicesAppointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ServicesAppointmentController extends Controller
 {
@@ -12,7 +14,8 @@ class ServicesAppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $servicesAppointment = ServicesAppointment::all();
+        return (new ServicesAppointmentResource($servicesAppointment))->response();
     }
 
     /**
@@ -20,7 +23,10 @@ class ServicesAppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $servicesAppointment = ServicesAppointment::create($input);
+//        Log::info("ServicesAppointment ID {$servicesAppointment->id} created successfully.");
+        return (new ServicesAppointmentResource($servicesAppointment))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -28,7 +34,7 @@ class ServicesAppointmentController extends Controller
      */
     public function show(ServicesAppointment $servicesAppointment)
     {
-        //
+        return (new ServicesAppointmentResource($servicesAppointment))->response();
     }
 
     /**
@@ -36,7 +42,9 @@ class ServicesAppointmentController extends Controller
      */
     public function update(Request $request, ServicesAppointment $servicesAppointment)
     {
-        //
+        $servicesAppointment->update($request->all());
+
+        return (new ServicesAppointmentResource($servicesAppointment))->response();
     }
 
     /**
@@ -44,6 +52,8 @@ class ServicesAppointmentController extends Controller
      */
     public function destroy(ServicesAppointment $servicesAppointment)
     {
-        //
+        $servicesAppointment->delete();
+
+        return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }

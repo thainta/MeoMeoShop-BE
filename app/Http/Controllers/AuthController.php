@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -48,17 +51,15 @@ class AuthController extends Controller
         ]);
 
         $user = User::create([
+            'user_name' => $request->user_name,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'role' => $request->role,
         ]);
-
-        return response()->json([
-            'message' => 'User created successfully',
-            'user' => $user
-        ]);
+//        Log::info("User ID {$user->id} created successfully.");
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function logout()

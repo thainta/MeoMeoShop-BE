@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HotelBooking extends Model
+class HotelType extends Model
 {
     use HasFactory;
 
@@ -15,10 +15,8 @@ class HotelBooking extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        "pet_id",
-        "check_in_date",
-        "check_out_date",
-        "total_price",
-        "type_id"
+        "name",
+        "description",
+        "price_per_day"
     ];
 }

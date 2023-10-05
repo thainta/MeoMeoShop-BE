@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\HotelBookingResource;
 use App\Models\HotelBooking;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class HotelBookingController extends Controller
 {
@@ -12,7 +14,8 @@ class HotelBookingController extends Controller
      */
     public function index()
     {
-        //
+        $hotelBooking = HotelBooking::all();
+        return (new HotelBookingResource($hotelBooking))->response();
     }
 
     /**
@@ -20,7 +23,10 @@ class HotelBookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $hotelBooking = HotelBooking::create($input);
+//        Log::info("HotelBooking ID {$hotelBooking->id} created successfully.");
+        return (new HotelBookingResource($hotelBooking))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -28,7 +34,7 @@ class HotelBookingController extends Controller
      */
     public function show(HotelBooking $hotelBooking)
     {
-        //
+        return (new HotelBookingResource($hotelBooking))->response();
     }
 
     /**
@@ -36,7 +42,9 @@ class HotelBookingController extends Controller
      */
     public function update(Request $request, HotelBooking $hotelBooking)
     {
-        //
+        $hotelBooking->update($request->all());
+
+        return (new HotelBookingResource($hotelBooking))->response();
     }
 
     /**
@@ -44,6 +52,8 @@ class HotelBookingController extends Controller
      */
     public function destroy(HotelBooking $hotelBooking)
     {
-        //
+        $hotelBooking->delete();
+
+        return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }

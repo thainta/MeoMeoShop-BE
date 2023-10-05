@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductsResource;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductsController extends Controller
 {
@@ -12,7 +14,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        $product = Products::all();
+        return (new ProductsResource($product))->response();
     }
 
     /**
@@ -20,30 +23,37 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $product = Products::create($input);
+//        Log::info("Products ID {$product->id} created successfully.");
+        return (new ProductsResource($product))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Products $products)
+    public function show(Products $product)
     {
-        //
+        return (new ProductsResource($product))->response();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Products $products)
+    public function update(Request $request, Products $product)
     {
-        //
+        $product->update($request->all());
+
+        return (new ProductsResource($product))->response();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $products)
+    public function destroy(Products $product)
     {
-        //
+        $product->delete();
+
+        return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }

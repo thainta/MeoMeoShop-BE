@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
@@ -12,7 +14,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $order = Order::all();
+        return (new OrderResource($order))->response();
     }
 
     /**
@@ -20,7 +23,10 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $order = Order::create($input);
+//        Log::info("Order ID {$order->id} created successfully.");
+        return (new OrderResource($order))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -28,7 +34,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return (new OrderResource($order))->response();
     }
 
     /**
@@ -36,7 +42,9 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $order->update($request->all());
+
+        return (new OrderResource($order))->response();
     }
 
     /**
@@ -44,6 +52,8 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+
+        return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }

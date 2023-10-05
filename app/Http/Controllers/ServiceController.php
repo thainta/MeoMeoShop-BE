@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ServiceController extends Controller
 {
@@ -12,7 +14,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $service = Service::all();
+        return (new ServiceResource($service))->response();
     }
 
     /**
@@ -20,7 +23,10 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $service = Service::create($input);
+//        Log::info("Service ID {$service->id} created successfully.");
+        return (new ServiceResource($service))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -28,7 +34,7 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        //
+        return (new ServiceResource($service))->response();
     }
 
     /**
@@ -36,7 +42,9 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        //
+        $service->update($request->all());
+
+        return (new ServiceResource($service))->response();
     }
 
     /**
@@ -44,6 +52,8 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        //
+        $service->delete();
+
+        return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }
