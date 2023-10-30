@@ -19,6 +19,9 @@ class Products extends Model
         "description",
         "price",
         "stock_quantity",
-        "category"
+        "category",
+        "type_food",
+        "sub_category",
+        "brand"
     ];
 }

@@ -12,17 +12,15 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('service_appointments', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->primary();
+            $table->integer("pet_id")->nullable();
             $table->timestamp('appointment_date');
+            $table->integer("service_id")->nullable();
             $table->decimal("total_price");
-            $table->unsignedBigInteger("pet_id")->nullable();
-            $table->unsignedBigInteger("service_id")->nullable();
             $table->timestamps();
 
-            $table->foreign("service_id")->references("id")->on("services");
             $table->foreign("pet_id")->references("id")->on("pets");
-
-
+            $table->foreign("service_id")->references("id")->on("services");
         });
     }
 
