@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('description');
             $table->decimal("price");
             $table->integer('stock_quantity');
+            $table->string("species");
             $table->string("category");
             $table->string("type_food");
             $table->string("sub_category");

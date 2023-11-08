@@ -19,6 +19,7 @@ class Products extends Model
         "description",
         "price",
         "stock_quantity",
+        "species",
         "category",
         "type_food",
         "sub_category",

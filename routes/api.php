@@ -48,3 +48,15 @@ Route::apiResources([
     'services' => ServiceController::class,
     'service_appointments' => ServicesAppointmentController::class
 ]);
+
+Route::controller(ProductsController::class)->prefix("product")->group(function () {
+
+    Route::get('/',  'index');
+    Route::post('/',  'store');
+    Route::get('/{product}', 'show');
+    Route::match(['put', 'patch'], 'products/{product}', 'update');
+    Route::delete('/{product}',  'destroy');
+    Route::get('/category/{category}', 'getProductByCategory');
+    Route::get('/species/{species}/category/{category}', 'getProductBySpeciesAndCategory');
+
+});
