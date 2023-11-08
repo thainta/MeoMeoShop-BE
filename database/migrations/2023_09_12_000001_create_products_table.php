@@ -12,9 +12,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id')->autoIncrement();
             $table->string('name');
             $table->string('description');
+            $table->string('imgUrl');
             $table->decimal("price");
             $table->integer('stock_quantity');
             $table->string("species");
