@@ -40,7 +40,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::apiResources([
     'users' => UserController::class,
     'pets' => PetController::class,
-    'products' => ProductsController::class,
+//    'products' => ProductsController::class,
     'hotel_booking' => HotelBookingController::class,
     'hotel_type' => HotelTypeController::class,
     'order' => OrderController::class,
@@ -49,7 +49,7 @@ Route::apiResources([
     'service_appointments' => ServicesAppointmentController::class
 ]);
 
-Route::controller(ProductsController::class)->prefix("product")->group(function () {
+Route::controller(ProductsController::class)->prefix("products")->group(function () {
 
     Route::get('/',  'index');
     Route::post('/',  'store');
