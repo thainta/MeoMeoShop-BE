@@ -40,7 +40,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::apiResources([
     'users' => UserController::class,
     'pets' => PetController::class,
-    'products' => ProductsController::class,
+//    'products' => ProductsController::class,
     'hotel_booking' => HotelBookingController::class,
     'hotel_type' => HotelTypeController::class,
     'order' => OrderController::class,
@@ -48,3 +48,15 @@ Route::apiResources([
     'services' => ServiceController::class,
     'service_appointments' => ServicesAppointmentController::class
 ]);
+
+Route::controller(ProductsController::class)->prefix("products")->group(function () {
+
+    Route::get('/',  'index');
+    Route::post('/',  'store');
+    Route::get('/{product}', 'show');
+    Route::match(['put', 'patch'], 'products/{product}', 'update');
+    Route::delete('/{product}',  'destroy');
+    Route::get('/category/{category}', 'getProductByCategory');
+    Route::get('/species/{species}/category/{category}', 'getProductBySpeciesAndCategory');
+
+});

@@ -6,6 +6,7 @@ use App\Http\Resources\ProductsResource;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductsController extends Controller
 {
@@ -24,8 +25,13 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+
+        $uploadedFileUrl = Cloudinary::upload($request->file('img')->getRealPath(), [
+            'folder' => 'MeoMeoShop/ProductImage',
+            'resource_type' => 'image'
+        ])->getSecurePath();
+        $input['imgUrl'] = $uploadedFileUrl;
         $product = Products::create($input);
-//        Log::info("Products ID {$product->id} created successfully.");
         return (new ProductsResource($product))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
@@ -55,5 +61,17 @@ class ProductsController extends Controller
         $product->delete();
 
         return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
+    }
+
+    public function getProductByCategory($category)
+    {
+        $product = Products::query()->where("category", $category)->get();
+        return (new ProductsResource($product))->response();
+    }
+
+    public function getProductBySpeciesAndCategory($species, $category)
+    {
+        $product = Products::query()->where(["species" => $species, "category" => $category])->get();
+        return (new ProductsResource($product))->response();
     }
 }
