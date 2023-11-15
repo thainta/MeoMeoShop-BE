@@ -18,6 +18,9 @@ return new class extends Migration {
             $table->decimal("price");
             $table->integer('stock_quantity');
             $table->string("category");
+            $table->string("type");
+            $table->string("subcategory");
+            $table->string("brand");
             $table->timestamps();
 
         });
