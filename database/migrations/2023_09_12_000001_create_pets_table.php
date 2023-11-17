@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pets', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
             $table->string('name');
             $table->string('species');
             $table->integer('age');
-            $table->unsignedBigInteger("user_id")->nullable();
-            $table->foreign("user_id")->references("id")->on("users");
+            $table->integer("user_id")->nullable();
             $table->timestamps();
+
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 

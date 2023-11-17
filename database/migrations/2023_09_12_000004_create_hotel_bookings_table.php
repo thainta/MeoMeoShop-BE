@@ -12,18 +12,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('hotel_bookings', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
+            $table->integer("pet_id")->nullable();
             $table->timestamp('check_in_date');
             $table->timestamp('check_out_date');
             $table->decimal("total_price");
-            $table->unsignedBigInteger("pet_id")->nullable();
-            $table->unsignedBigInteger("type_id")->nullable();
+            $table->integer("type_id")->nullable();
             $table->timestamps();
 
-            $table->foreign("type_id")->references("id")->on("hotel_types");
             $table->foreign("pet_id")->references("id")->on("pets");
-
-
+            $table->foreign("type_id")->references("id")->on("hotel_types");
         });
     }
 

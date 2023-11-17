@@ -11,12 +11,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('hotel_types', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->string('name');
-            $table->string('description');
-            $table->decimal("price_per_day");
+            $table->integer('quantity');
+            $table->integer("user_id")->nullable();
+            $table->integer("product_id")->nullable();
             $table->timestamps();
+
+            $table->foreign("product_id")->references("id")->on("products");
+            $table->foreign("user_id")->references("id")->on("users");
         });
     }
 
@@ -25,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('hotel_types');
+        Schema::dropIfExists('carts');
     }
 };

@@ -12,16 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
+            $table->integer("order_id")->nullable();
+            $table->integer("product_id")->nullable();
             $table->integer('quantity');
-            $table->decimal('subtotal_amount');
-            $table->unsignedBigInteger("order_id")->nullable();
-            $table->unsignedBigInteger("product_id")->nullable();
-            $table->timestamps();
+            $table->decimal('subtotal');
 
             $table->foreign("order_id")->references("id")->on("orders");
             $table->foreign("product_id")->references("id")->on("products");
-
         });
     }
 

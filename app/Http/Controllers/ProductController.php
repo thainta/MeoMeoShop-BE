@@ -56,4 +56,15 @@ class ProductsController extends Controller
 
         return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
+    public function getProductBySpecies($species)
+    {
+        $product = Product::query()->where("species", $species)->get();
+        return (new ProductsResource($product))->response();
+    }
+
+    public function getProductBySpeciesAndCategory($species, $category)
+    {
+        $product = Product::query()->where(["species" => $species, "category" => $category])->get();
+        return (new ProductsResource($product))->response();
+    }
 }
