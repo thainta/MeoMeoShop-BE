@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id')->autoIncrement();
             $table->timestamp('order_date');
             $table->decimal('total_amount');
             $table->integer("user_id")->nullable();

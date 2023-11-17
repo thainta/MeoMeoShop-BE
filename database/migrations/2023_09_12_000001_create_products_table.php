@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->integer('stock_quantity');
             $table->string("species");
             $table->string("category");
-            $table->string("type_food");
             $table->string("sub_category");
             $table->string("brand");
             $table->timestamps();
