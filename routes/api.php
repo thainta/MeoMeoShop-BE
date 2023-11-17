@@ -1,17 +1,19 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HotelBookingController;
-use App\Http\Controllers\HotelTypeController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\OrderItemController;
-use App\Http\Controllers\PetController;
-use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ServicesAppointmentController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PetController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\HotelTypeController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\HotelBookingController;
+use App\Http\Controllers\ServicesAppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +48,9 @@ Route::apiResources([
     'order' => OrderController::class,
     'order_item' => OrderItemController::class,
     'services' => ServiceController::class,
-    'service_appointments' => ServicesAppointmentController::class
+    'service_appointments' => ServicesAppointmentController::class,
+    'cart' => CartController::class,
+    'images' => ImageController::class,
 ]);
 
 Route::controller(ProductsController::class)->prefix("products")->group(function () {

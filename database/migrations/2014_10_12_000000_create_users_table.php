@@ -15,7 +15,7 @@ return new class extends Migration
     {
         DB::statement('SET SESSION sql_require_primary_key=0');
         Schema::create('users', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id')->autoIncrement();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
