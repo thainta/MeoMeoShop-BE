@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductsResource;
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductsController extends Controller
 {
@@ -15,7 +14,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $product = Products::all();
+        $product = Product::all();
         return (new ProductsResource($product))->response();
     }
 
@@ -25,20 +24,15 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-
-        $uploadedFileUrl = Cloudinary::upload($request->file('img')->getRealPath(), [
-            'folder' => 'MeoMeoShop/ProductImage',
-            'resource_type' => 'image'
-        ])->getSecurePath();
-        $input['imgUrl'] = $uploadedFileUrl;
-        $product = Products::create($input);
+        $product = Product::create($input);
+//        Log::info("Product ID {$product->id} created successfully.");
         return (new ProductsResource($product))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Products $product)
+    public function show(Product $product)
     {
         return (new ProductsResource($product))->response();
     }
@@ -46,7 +40,7 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Products $product)
+    public function update(Request $request, Product $product)
     {
         $product->update($request->all());
 
@@ -56,22 +50,21 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $product)
+    public function destroy(Product $product)
     {
         $product->delete();
 
         return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
-
-    public function getProductByCategory($category)
+    public function getProductBySpecies($species)
     {
-        $product = Products::query()->where("category", $category)->get();
+        $product = Product::query()->where("species", $species)->get();
         return (new ProductsResource($product))->response();
     }
 
     public function getProductBySpeciesAndCategory($species, $category)
     {
-        $product = Products::query()->where(["species" => $species, "category" => $category])->get();
+        $product = Product::query()->where(["species" => $species, "category" => $category])->get();
         return (new ProductsResource($product))->response();
     }
 }
