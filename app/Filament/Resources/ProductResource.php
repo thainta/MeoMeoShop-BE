@@ -27,20 +27,27 @@ class ProductResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('description'),
+                Forms\Components\FileUpload::make('imgUrl')
+                    ->required()
+                    ->columns(1)
+                    ->directory('public')
+                    ->multiple(),
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->prefix('VND')
                     ->required(),
-                Forms\Components\TextInput::make('stock_quantity')->required(),
-                Forms\Components\Select::make('category')
+                Forms\Components\TextInput::make('stock_quantity')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\Select::make('species')
                     ->options([
                         'cat' => 'Cat',
                         'dog' => 'Dog',
                         'other' => 'Other',
                     ])
                     ->required(),
-                Forms\Components\TextInput::make('type')->required(),
-                Forms\Components\TextInput::make('subcategory'),
+                Forms\Components\TextInput::make('category')->required(),
+                Forms\Components\TextInput::make('sub_category'),
                 Forms\Components\TextInput::make('brand'),
             ]);
     }
