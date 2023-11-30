@@ -27,16 +27,12 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description'),
+                Forms\Components\TextInput::make('description')->required(),
                 Forms\Components\FileUpload::make('imgUrl')
                     ->required()
                     ->columns(1)
                     ->disk('cloudinary')
-                    ->after(function (FileUpload $component, $state, Product $record) {
-                        $fileUrl = $state->getUrl(); // Retrieve the file URL
-                        $record->imgUrl = $fileUrl; // Set the imgUrl attribute to the file URL
-                        $record->save(); // Save the record with the new imgUrl
-                    }),
+                    ->directory('MeoMeoShop/ProductImage'),
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->prefix('VND')
