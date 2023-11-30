@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductsResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ProductsController extends Controller
     public function index()
     {
         $product = Product::all();
-        return (new ProductsResource($product))->response();
+        return (new ProductResource($product))->response();
     }
 
     /**
@@ -26,7 +26,7 @@ class ProductsController extends Controller
         $input = $request->all();
         $product = Product::create($input);
 //        Log::info("Product ID {$product->id} created successfully.");
-        return (new ProductsResource($product))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new ProductResource($product))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -34,7 +34,7 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        return (new ProductsResource($product))->response();
+        return (new ProductResource($product))->response();
     }
 
     /**
@@ -44,7 +44,7 @@ class ProductsController extends Controller
     {
         $product->update($request->all());
 
-        return (new ProductsResource($product))->response();
+        return (new ProductResource($product))->response();
     }
 
     /**
@@ -59,12 +59,12 @@ class ProductsController extends Controller
     public function getProductBySpecies($species)
     {
         $product = Product::query()->where("species", $species)->get();
-        return (new ProductsResource($product))->response();
+        return (new ProductResource($product))->response();
     }
 
     public function getProductBySpeciesAndCategory($species, $category)
     {
         $product = Product::query()->where(["species" => $species, "category" => $category])->get();
-        return (new ProductsResource($product))->response();
+        return (new ProductResource($product))->response();
     }
 }

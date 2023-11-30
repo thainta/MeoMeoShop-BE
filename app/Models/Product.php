@@ -25,8 +25,4 @@ class Product extends Model
         "sub_category",
         "brand"
     ];
-
-    protected $cast = [
-        'imgUrl' => 'array'
-    ];
 }

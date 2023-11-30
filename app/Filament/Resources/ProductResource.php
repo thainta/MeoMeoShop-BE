@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
 
 class ProductResource extends Resource
 {
@@ -30,8 +31,12 @@ class ProductResource extends Resource
                 Forms\Components\FileUpload::make('imgUrl')
                     ->required()
                     ->columns(1)
-                    ->directory('public')
-                    ->multiple(),
+                    ->disk('cloudinary')
+                    ->after(function (FileUpload $component, $state, Product $record) {
+                        $fileUrl = $state->getUrl(); // Retrieve the file URL
+                        $record->imgUrl = $fileUrl; // Set the imgUrl attribute to the file URL
+                        $record->save(); // Save the record with the new imgUrl
+                    }),
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->prefix('VND')
@@ -56,10 +61,41 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\ImageColumn::make('imgUrl'),
+                Tables\Columns\TextColumn::make('price')->sortable()->money('VND'),
+                Tables\Columns\TextColumn::make('stock_quantity'),
+                Tables\Columns\SelectColumn::make('species')
+                ->options([
+                    'cat' => 'Cat',
+                    'dog' => 'Dog',
+                    'other' => 'Other',
+                ]),
+                Tables\Columns\TextColumn::make('category'),
+                Tables\Columns\TextColumn::make('sub_category'),
+                Tables\Columns\TextColumn::make('brand'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('species')
+                ->options([
+                    'cat' => 'Cat',
+                    'dog' => 'Dog',
+                    'other' => 'Other',
+                ]),
+                Tables\Filters\SelectFilter::make('category')
+                ->options([
+                    'Food' => 'Food',
+                    'Clothes' => 'Clothes',
+                    'Toys' => 'Toys',
+                    'Vitamins' => 'Vitamins',
+                    'Shampoo' => 'Shampoo',
+                    'Collars' => 'Collars',
+                    'Bowls' => 'Bowls',
+                    'Beds' => 'Beds',
+                    'Treats' => 'Treats',
+                    'Container' => 'Container',
+                ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

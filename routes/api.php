@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HotelTypeController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HotelBookingController;
@@ -53,7 +53,7 @@ Route::apiResources([
     'images' => ImageController::class,
 ]);
 
-Route::controller(ProductsController::class)->prefix("products")->group(function () {
+Route::controller(ProductController::class)->prefix("products")->group(function () {
 
     Route::get('/',  'index');
     Route::post('/',  'store');
