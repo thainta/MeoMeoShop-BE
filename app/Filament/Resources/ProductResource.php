@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Product;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use RelationManagers\Image;
+use Filament\Resources\Resource;
+use Filament\Tables\Grouping\Group;
 use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ProductResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -29,6 +31,13 @@ class ProductResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('description')->required(),
                 Forms\Components\FileUpload::make('imgUrl')
+                    ->label('Thumbnail Image')
+                    ->required()
+                    ->columns(1)
+                    ->disk('cloudinary')
+                    ->directory('MeoMeoShop/ProductImage'),
+                Forms\Components\FileUpload::make('images')
+                    ->multiple()
                     ->required()
                     ->columns(1)
                     ->disk('cloudinary')
@@ -95,6 +104,7 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
