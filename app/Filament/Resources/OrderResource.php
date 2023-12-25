@@ -10,11 +10,16 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Http;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Split;
+use App\Http\Controllers\OrderController;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use App\Http\Controllers\OrderItemController;
 use App\Filament\Resources\OrderResource\Pages;
 use Filament\Infolists\Components\RepeatableEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -36,6 +41,7 @@ class OrderResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $apiCall = (new OrderItemController())->getOrderItemByOrder(1);
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user')->searchable(),
@@ -70,62 +76,52 @@ class OrderResource extends Resource
                     // This is the important part!
                     ->infolist([
                         // Inside, we can treat this as any info list and add all the fields we want!
-                        Section::make('Personal Information')
+                        Section::make('Customer Information')
                             ->schema([
-                                TextEntry::make('id'),
-                                TextEntry::make('total_amount'),
+                                TextEntry::make('users.name')->label("Customer name")->listWithLineBreaks(),
+                                TextEntry::make('total_amount')->label("Total price")->money('VND')->listWithLineBreaks(),                 
                             ])
-                            ->columns(),
-                        Section::make('Contact Information')
+                            ->columns(4),
+                        // Section::make('Contact Information')
+                        //     ->schema([
+                        //         TextEntry::make('orderItems.products.name'),
+                        //         TextEntry::make('phone_number'),
+                        //     ])
+                        //     ->columns(),
+                        // Section::make('Additional Details')
+                        //     ->schema([
+                        //         TextEntry::make('description'),
+                        //     ]),
+                        // Section::make('Lead and Stage Information')
+                        //     ->schema([
+                        //         TextEntry::make('leadSource.name'),
+                        //         TextEntry::make('pipelineStage.name'),
+                        //     ])
+                        //     ->columns(),
+                        RepeatableEntry::make('orderItems')
+                            ->label("Products Information")
                             ->schema([
-                                TextEntry::make('orderItems.id'),
-                                TextEntry::make('phone_number'),
+                                TextEntry::make('products.id')->label("Product Id")->listWithLineBreaks(),                                
+                                TextEntry::make('products.name')->label("Name")->listWithLineBreaks(),
+                                TextEntry::make('quantity')->label("Quantity")->listWithLineBreaks(),
+                                TextEntry::make('subtotal')->label("Price")->money('VND')->listWithLineBreaks(), 
                             ])
-                            ->columns(),
-                        Section::make('Additional Details')
-                            ->schema([
-                                TextEntry::make('description'),
-                            ]),
-                        Section::make('Lead and Stage Information')
-                            ->schema([
-                                TextEntry::make('leadSource.name'),
-                                TextEntry::make('pipelineStage.name'),
-                            ])
-                            ->columns(),
+                            ->columns(4) 
                     ]),
             ]);;
     }
     
-    // public static function infolist(Infolist $infolist): Infolist
-    // {
-    //     return $infolist
-    //     ->state([
-    //         'order' => $this->getTableRecords(),
-    //     ])
-    //     ->schema([
-    //         RepeatableEntry::make('albums')
-    //             ->hiddenLabel()
-    //             ->schema([
-    //                 Split::make([
-    //                     Grid::make(1)
-    //                         ->schema([
-    //                             TextEntry::make('name')
-    //                                 ->hiddenLabel(),
-    //                             TextEntry::make('lyric_count')
-    //                                 ->hiddenLabel(),
-    //                             TextEntry::make('detail')
-    //                                 ->hiddenLabel(),
-    //                             RepeatableEntry::make('artists')
-    //                                 ->schema([
-    //                                     TextEntry::make('name')
-    //                                         ->badge()
-    //                                         ->hiddenLabel(),
-    //                                 ]),
-    //                         ])
-    //                 ])->from('lg'),
-    //             ]),
-    //     ]);
-    // }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+        ->schema([
+            TextEntry::make('id'),
+            RepeatableEntry::make('orderItems')
+            ->schema([
+                TextEntry::make('id')
+            ])
+        ]);
+    }
     public static function getRelations(): array
     {
         return [

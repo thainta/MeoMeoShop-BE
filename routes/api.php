@@ -46,7 +46,7 @@ Route::apiResources([
     'hotel_booking' => HotelBookingController::class,
     'hotel_type' => HotelTypeController::class,
     'order' => OrderController::class,
-    'order_item' => OrderItemController::class,
+    // 'order_item' => OrderItemController::class,
     'services' => ServiceController::class,
     'service_appointments' => ServicesAppointmentController::class,
     'cart' => CartController::class,
@@ -63,4 +63,14 @@ Route::controller(ProductController::class)->prefix("products")->group(function 
     Route::get('/species/{species}', 'getProductBySpecies');
     Route::get('/species/{species}/category/{category}', 'getProductBySpeciesAndCategory');
 
+});
+
+Route::controller(OrderItemController::class)->prefix("order_item")->group(function () {
+
+    Route::get('/',  'index');
+    Route::post('/',  'store');
+    Route::get('/{order_item}', 'show');
+    Route::match(['put', 'patch'], 'order_item/{order_item}', 'update');
+    Route::delete('/{order_item}',  'destroy');
+    Route::get('/order/{order_id}', 'getOrderItemByOrder');
 });

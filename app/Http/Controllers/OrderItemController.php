@@ -56,4 +56,10 @@ class OrderItemController extends Controller
 
         return response(null)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
+
+    public function getOrderItemByOrder($order_id)
+    {
+        $orderItem = OrderItem::with('products')->where('order_id', $order_id)->get();
+        return (new OrderItemResource($orderItem))->response();
+    }
 }
