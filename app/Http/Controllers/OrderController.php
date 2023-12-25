@@ -24,6 +24,9 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+         error_log($input['order_date']);
+        $input['order_date'] = date('Y-m-d h:i:s', time());;
+        error_log($input['order_date']);
         $order = Order::create($input);
 //        Log::info("Order ID {$order->id} created successfully.");
         return (new OrderResource($order))->response()->setStatusCode(Response::HTTP_CREATED);

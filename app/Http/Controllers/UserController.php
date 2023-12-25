@@ -40,6 +40,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user->load('orders');
         return (new UserResource($user))->response();
     }
 
