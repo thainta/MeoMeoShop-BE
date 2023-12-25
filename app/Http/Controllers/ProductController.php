@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+        $product = Product::with('image')->get();
         return (new ProductResource($product))->response();
     }
 
@@ -40,6 +40,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product->load('image');
         return (new ProductResource($product))->response();
     }
 

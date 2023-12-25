@@ -24,14 +24,9 @@ class CreateProduct extends CreateRecord
         $record =  static::getModel()::create($data);
         for($i =0; $i < count($imgData); $i++){
             error_log( "record: ".$imgData[$i]);
-            // Create a new Guardian model instance
             $image = new Image();
             $image->url = "https://res.cloudinary.com/devkynlcz/image/upload/".$imgData[$i];
-
-            // Assuming 'student_id' is the foreign key linking to students
             $image->product_id = $record->id; 
-
-            // Save the Guardian model to insert the data
             $image->save();
         }
 
